@@ -40,6 +40,8 @@ jobs:
           fi
 
       - name: Publish to npm
-        run: npm publish --tag ${{ steps.tag.outputs.dist_tag }} --access public
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          npm publish --tag ${{ steps.tag.outputs.dist_tag }} --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
