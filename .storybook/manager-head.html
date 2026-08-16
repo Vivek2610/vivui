@@ -1,0 +1,67 @@
+<style>
+  /* Settings page ( /settings/* ) */
+  [data-path^="/settings"] {
+    display: none !important;
+  }
+
+  /* Mobile: About Storybook opens settings */
+  button[title="About Storybook"],
+  button[aria-label="About Storybook"] {
+    display: none !important;
+  }
+</style>
+
+<script>
+  (function () {
+    var HIDDEN_PREFIXES = [
+      "About your Storybook",
+      "About Storybook",
+      "What's new",
+      "Keyboard shortcuts",
+      "Release notes",
+    ];
+
+    function shouldHide(label) {
+      for (var i = 0; i < HIDDEN_PREFIXES.length; i++) {
+        if (label.indexOf(HIDDEN_PREFIXES[i]) === 0) return true;
+      }
+      return false;
+    }
+
+    function hideMenuEntries() {
+      document.querySelectorAll("button, a").forEach(function (el) {
+        var label = (el.textContent || "").replace(/\s+/g, " ").trim();
+        if (shouldHide(label)) {
+          var item = el.closest("li") || el;
+          item.style.display = "none";
+        }
+      });
+    }
+
+    function blockSettingsRoute() {
+      var params = new URLSearchParams(window.location.search);
+      var path = params.get("path") || "";
+      if (path.indexOf("/settings") === 0) {
+        params.set("path", "/docs/introduction--docs");
+        var next =
+          window.location.pathname +
+          "?" +
+          params.toString() +
+          window.location.hash;
+        window.history.replaceState({}, "", next);
+      }
+    }
+
+    function run() {
+      hideMenuEntries();
+      blockSettingsRoute();
+    }
+
+    run();
+    new MutationObserver(run).observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    });
+    window.addEventListener("popstate", blockSettingsRoute);
+  })();
+</script>

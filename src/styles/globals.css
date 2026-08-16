@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * VivUI Design Tokens (CSS Variables).
+ *
+ * Strategy:
+ *   - All visual primitives live as CSS variables on `:root`.
+ *   - Themes (light/dark/custom) override variables under `[data-theme="..."]`.
+ *   - Tailwind preset maps utilities -> these variables.
+ *   - This makes the entire design system swappable at runtime, SSR-safe,
+ *     and per-subtree theme-able (any element can host data-theme).
+ */
+
+@layer base {
+  :root,
+  [data-theme="light"] {
+    /* === Brand =============================================== */
+    --viv-brand: 252 87% 64%;            /* electric violet */
+    --viv-brand-foreground: 0 0% 100%;
+    --viv-brand-subtle: 252 95% 96%;
+    --viv-brand-muted: 252 30% 88%;
+
+    /* === Surfaces ============================================ */
+    --viv-bg: 240 20% 99%;
+    --viv-surface: 0 0% 100%;
+    --viv-surface-elevated: 0 0% 100%;
+    --viv-surface-overlay: 240 12% 96%;
+
+    /* === Foreground ========================================== */
+    --viv-fg: 240 12% 10%;
+    --viv-muted: 240 8% 95%;
+    /* Darker helper text (~6.9:1 on white) — older 45% L read washed out next to headings */
+    --viv-muted-foreground: 240 7% 32%;
+
+    /* === Borders / Rings ===================================== */
+    --viv-border: 240 10% 90%;
+    --viv-ring: 252 87% 64%;
+
+    /* === Status ============================================== */
+    --viv-success: 152 70% 42%;
+    --viv-success-foreground: 0 0% 100%;
+    --viv-warning: 38 95% 55%;
+    --viv-warning-foreground: 30 15% 12%;
+    --viv-danger: 0 75% 58%;
+    --viv-danger-foreground: 0 0% 100%;
+    --viv-info: 210 90% 56%;
+    --viv-info-foreground: 0 0% 100%;
+
+    /* === Radii =============================================== */
+    --viv-radius-xs: 4px;
+    --viv-radius-sm: 6px;
+    --viv-radius: 10px;
+    --viv-radius-md: 12px;
+    --viv-radius-lg: 16px;
+    --viv-radius-xl: 20px;
+    --viv-radius-2xl: 28px;
+    --viv-radius-3xl: 36px;
+
+    /* === Shadows ============================================= */
+    --viv-shadow-xs: 0 1px 2px 0 hsl(240 12% 10% / 0.04);
+    --viv-shadow-sm: 0 1px 2px hsl(240 12% 10% / 0.06), 0 1px 3px hsl(240 12% 10% / 0.05);
+    --viv-shadow: 0 4px 12px -2px hsl(240 12% 10% / 0.08), 0 2px 4px -2px hsl(240 12% 10% / 0.06);
+    --viv-shadow-md: 0 10px 25px -3px hsl(240 12% 10% / 0.10), 0 4px 6px -4px hsl(240 12% 10% / 0.08);
+    --viv-shadow-lg: 0 20px 40px -8px hsl(240 12% 10% / 0.14), 0 8px 16px -8px hsl(240 12% 10% / 0.08);
+    --viv-shadow-xl: 0 30px 60px -12px hsl(240 12% 10% / 0.22);
+    --viv-shadow-glow: 0 0 0 1px hsl(var(--viv-brand) / 0.35), 0 0 24px -4px hsl(var(--viv-brand) / 0.45);
+    --viv-shadow-inner: inset 0 1px 2px hsl(240 12% 10% / 0.06);
+
+    /* === Blur ================================================ */
+    --viv-blur-glass: 14px;
+
+    /* === Fonts =============================================== */
+    --viv-font-sans: "Inter", "InterVariable", system-ui, sans-serif;
+    --viv-font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+    --viv-font-display: "Space Grotesk", var(--viv-font-sans), sans-serif;
+
+    /* === Motion ============================================== */
+    --viv-duration-instant: 80ms;
+    --viv-duration-fast: 140ms;
+    --viv-duration: 220ms;
+    --viv-duration-slow: 360ms;
+    --viv-duration-slower: 600ms;
+
+    --viv-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --viv-ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+    --viv-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --viv-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* === Z-Index ============================================= */
+    --viv-z-hide: -1;
+    --viv-z-base: 0;
+    --viv-z-docked: 10;
+    --viv-z-dropdown: 1000;
+    --viv-z-sticky: 1100;
+    --viv-z-banner: 1200;
+    --viv-z-overlay: 1300;
+    --viv-z-modal: 1400;
+    --viv-z-popover: 1500;
+    --viv-z-skipnav: 1600;
+    --viv-z-toast: 1700;
+    --viv-z-tooltip: 1800;
+  }
+
+  [data-theme="dark"] {
+    --viv-brand: 258 95% 70%;
+    --viv-brand-foreground: 240 15% 8%;
+    --viv-brand-subtle: 258 35% 18%;
+    --viv-brand-muted: 258 25% 24%;
+
+    --viv-bg: 240 14% 6%;
+    --viv-surface: 240 12% 9%;
+    --viv-surface-elevated: 240 12% 12%;
+    --viv-surface-overlay: 240 10% 14%;
+
+    --viv-fg: 240 6% 96%;
+    --viv-muted: 240 8% 14%;
+    --viv-muted-foreground: 240 6% 64%;
+
+    --viv-border: 240 8% 18%;
+    --viv-ring: 258 95% 70%;
+
+    --viv-success: 152 65% 50%;
+    --viv-warning: 38 95% 60%;
+    --viv-danger: 0 75% 65%;
+    --viv-info: 210 95% 65%;
+
+    --viv-shadow-xs: 0 1px 2px 0 hsl(0 0% 0% / 0.4);
+    --viv-shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.5), 0 1px 3px hsl(0 0% 0% / 0.45);
+    --viv-shadow: 0 4px 12px -2px hsl(0 0% 0% / 0.55), 0 2px 4px -2px hsl(0 0% 0% / 0.45);
+    --viv-shadow-md: 0 10px 25px -3px hsl(0 0% 0% / 0.6), 0 4px 6px -4px hsl(0 0% 0% / 0.5);
+    --viv-shadow-lg: 0 20px 40px -8px hsl(0 0% 0% / 0.7), 0 8px 16px -8px hsl(0 0% 0% / 0.55);
+    --viv-shadow-xl: 0 30px 60px -12px hsl(0 0% 0% / 0.8);
+    --viv-shadow-glow: 0 0 0 1px hsl(var(--viv-brand) / 0.4), 0 0 28px -2px hsl(var(--viv-brand) / 0.55);
+    --viv-shadow-inner: inset 0 1px 2px hsl(0 0% 0% / 0.5);
+  }
+
+  /* Respect users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --viv-duration-instant: 0ms;
+      --viv-duration-fast: 0ms;
+      --viv-duration: 0ms;
+      --viv-duration-slow: 0ms;
+      --viv-duration-slower: 0ms;
+    }
+  }
+
+  html {
+    font-family: var(--viv-font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: hsl(var(--viv-bg));
+    color: hsl(var(--viv-fg));
+  }
+
+  *,
+  *::before,
+  *::after {
+    border-color: hsl(var(--viv-border));
+  }
+}

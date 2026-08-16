@@ -1,0 +1,47 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Foundations/Accessibility" />
+
+# Accessibility
+
+VivUI is built **a11y-first**. Every component must satisfy these rules before merge:
+
+| Rule | How VivUI enforces it |
+| --- | --- |
+| Keyboard reachable | All interactive components support tab/shift-tab + roving focus where relevant. |
+| Focus visible | `viv-focus-ring` utility uses the `--viv-ring` token; never `outline: none` without replacement. |
+| ARIA correct | Components map state to ARIA (`aria-busy`, `aria-invalid`, `aria-disabled`). |
+| Color contrast | All semantic tokens pass WCAG AA against their `*-foreground` pair. |
+| Reduced motion | Durations collapse to `0ms` under `prefers-reduced-motion: reduce`. |
+| Screen reader text | Loading/icon-only states ship `<span className="sr-only">` labels. |
+
+## Tooling
+
+- The `@storybook/addon-a11y` panel runs **axe-core** on every story.
+- CI uses `axe-playwright` against the published Storybook to catch regressions.
+- All stories tagged `autodocs` get an a11y audit by default.
+
+## Patterns
+
+### Icon-only buttons
+
+```tsx
+<Button size="icon" aria-label="Open menu">
+  <MenuIcon />
+</Button>
+```
+
+### Async / loading buttons
+
+```tsx
+<Button isLoading loadingLabel="Saving changes">Save</Button>
+```
+
+`aria-busy="true"` is set automatically; the visual children are hidden from
+screen readers (`aria-hidden`) while the `loadingLabel` is announced.
+
+### Form fields
+
+Pair `<Input invalid />` with the host form library — VivUI sets
+`aria-invalid` automatically. Provide a separate `<label>` and an
+`aria-describedby` referencing your error message.

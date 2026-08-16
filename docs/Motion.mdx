@@ -1,0 +1,47 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Foundations/Motion" />
+
+# Motion
+
+VivUI is **motion-first**: animations express *meaning*, not decoration.
+
+## Principles
+
+- **Purposeful**: every motion communicates state — entering, pressing, focusing.
+- **Tokenized**: durations and easings come from `--viv-duration*` and `--viv-ease*`.
+- **Respectful**: collapses to 0ms under `prefers-reduced-motion: reduce`.
+
+## Built-in keyframes (Tailwind)
+
+| Utility | What it does |
+| --- | --- |
+| `animate-viv-fade-in` | Default entrance fade. |
+| `animate-viv-slide-up` | Soft 8px translate + fade — popovers, dialogs. |
+| `animate-viv-scale-in` | 0.96 → 1 scale — tooltips, dropdowns. |
+| `animate-viv-shimmer` | Skeleton/loading shimmer. |
+| `animate-viv-pulse-glow` | Brand-colored radial pulse — for "AI" / "live" affordances. |
+
+## Easing tokens
+
+| Token | Use |
+| --- | --- |
+| `var(--viv-ease)` | Default expressive ease — most UI motion. |
+| `var(--viv-ease-out)` | Decelerating — entrances. |
+| `var(--viv-ease-in)` | Accelerating — exits. |
+| `var(--viv-ease-spring)` | Bouncy — playful AI feedback (e.g. generation complete). |
+
+## Pairing with Framer Motion
+
+VivUI doesn't require Framer Motion, but if you use it, prefer:
+
+```tsx
+<motion.div
+  initial={{ opacity: 0, y: 8 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.36, ease: [0.16, 1, 0.3, 1] }}
+/>
+```
+
+(The numbers above mirror `--viv-duration-slow` and `--viv-ease-out`, keeping
+"hand-rolled" motion consistent with token-driven motion.)

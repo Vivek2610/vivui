@@ -1,0 +1,76 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Foundations/Design Tokens" />
+
+# Design Tokens
+
+VivUI's tokens are the *only* place colors, sizes, and motion values are defined.
+Components reference tokens, not raw values — that's what makes the entire system
+themeable at runtime.
+
+## Architecture
+
+```
+src/styles/globals.css        ← CSS variables (the runtime source of truth)
+src/theme/tokens/*.ts         ← typed JS mirrors (for token tables, charts, docs)
+tailwind.preset.cjs           ← maps Tailwind utilities → variables
+```
+
+## Color tokens
+
+All colors are stored as `H S% L%` triplets so Tailwind's `<alpha-value>` syntax
+works (`bg-brand/40` etc.).
+
+<div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fill, minmax(180px,1fr))" }}>
+  {[
+    ["--viv-brand", "Brand"],
+    ["--viv-bg", "Background"],
+    ["--viv-surface", "Surface"],
+    ["--viv-surface-elevated", "Surface Elevated"],
+    ["--viv-fg", "Foreground"],
+    ["--viv-muted", "Muted"],
+    ["--viv-border", "Border"],
+    ["--viv-success", "Success"],
+    ["--viv-warning", "Warning"],
+    ["--viv-danger", "Danger"],
+    ["--viv-info", "Info"],
+  ].map(([token, label]) => (
+    <div key={token} style={{ borderRadius: 12, overflow: "hidden", border: "1px solid hsl(var(--viv-border))" }}>
+      <div style={{ height: 56, background: `hsl(var(${token}))` }} />
+      <div style={{ padding: 10, fontSize: 12 }}>
+        <strong>{label}</strong><br />
+        <code>{token}</code>
+      </div>
+    </div>
+  ))}
+</div>
+
+## Radii
+
+| Token | Value |
+| --- | --- |
+| `--viv-radius-xs` | 4px |
+| `--viv-radius-sm` | 6px |
+| `--viv-radius`    | 10px |
+| `--viv-radius-md` | 12px |
+| `--viv-radius-lg` | 16px |
+| `--viv-radius-xl` | 20px |
+| `--viv-radius-2xl` | 28px |
+| `--viv-radius-3xl` | 36px |
+
+## Motion
+
+| Token | Default value | Use |
+| --- | --- | --- |
+| `--viv-duration-instant` | 80ms | tooltips, micro press feedback |
+| `--viv-duration-fast`    | 140ms | hover states, color transitions |
+| `--viv-duration`         | 220ms | entrances, popovers |
+| `--viv-duration-slow`    | 360ms | dialogs, sheets |
+| `--viv-duration-slower`  | 600ms | hero/intro animations |
+| `--viv-ease`             | `cubic-bezier(.22,1,.36,1)` | the default expressive ease |
+| `--viv-ease-spring`      | `cubic-bezier(.34,1.56,.64,1)` | playful AI feedback |
+
+## Z-index
+
+Documented in `src/theme/tokens/zIndex.ts` — keep stacking discipline so toasts always
+sit above modals, etc.

@@ -1,0 +1,26 @@
+<script>
+  /**
+   * Anti-FOUC: apply dark theme tokens before the first paint.
+   * withThemeByDataAttribute corrects the attribute after React mounts,
+   * so any light-mode transition is smooth rather than a white flash.
+   */
+  (function () {
+    try {
+      // @storybook/addon-themes v8 stores globals in one of these keys
+      var candidates = ["sb-addon-themes-3", "storybook-globals"];
+      var saved = null;
+      for (var i = 0; i < candidates.length; i++) {
+        try {
+          var raw = localStorage.getItem(candidates[i]);
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (parsed && parsed.theme) { saved = parsed.theme; break; }
+          }
+        } catch (_) {}
+      }
+      document.documentElement.setAttribute("data-theme", saved || "dark");
+    } catch (e) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  })();
+</script>

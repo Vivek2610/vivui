@@ -1,0 +1,94 @@
+/*
+ * Storybook preview + docs overrides.
+ * Viv tokens on html[data-theme]; docs chrome follows VivDocsContainer theme.
+ */
+
+html,
+body,
+#storybook-root,
+#storybook-docs,
+.sb-show-main,
+.sbdocs-wrapper,
+.sbdocs,
+.sbdocs-content,
+.sbdocs.sbdocs-wrapper {
+  min-height: 100%;
+  background-color: hsl(var(--viv-bg)) !important;
+  color: hsl(var(--viv-fg));
+}
+
+.sb-show-main {
+  padding: 0;
+}
+
+.docs-story,
+.sb-story.sb-unstyled,
+.sb-story {
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  background-color: hsl(var(--viv-surface)) !important;
+  border: 1px solid hsl(var(--viv-border));
+  border-radius: var(--viv-radius-md, 12px);
+  box-shadow: none;
+}
+
+.sbdocs .docs-story > div {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+.sbdocs h1,
+.sbdocs h2,
+.sbdocs h3,
+.sbdocs h4,
+.sbdocs p,
+.sbdocs li,
+.sbdocs td,
+.sbdocs th,
+.sbdocs a {
+  color: hsl(var(--viv-fg));
+}
+
+.sbdocs pre,
+.sbdocs table,
+.docblock-argstable table {
+  background-color: hsl(var(--viv-surface)) !important;
+  color: hsl(var(--viv-fg)) !important;
+  border-color: hsl(var(--viv-border)) !important;
+}
+
+/* TOC sidebar */
+.toc-wrapper,
+.toc-list-item a {
+  color: hsl(var(--viv-fg)) !important;
+}
+
+.toc-list-item a:hover,
+.toc-list-item a:focus {
+  color: hsl(var(--viv-brand)) !important;
+}
+
+/* Light theme: override any leftover Storybook dark docs chrome */
+[data-theme="light"] .toc-wrapper,
+[data-theme="light"] .toc-list-item a {
+  color: hsl(var(--viv-fg)) !important;
+}
+
+[data-theme="light"] .docblock-argstable,
+[data-theme="light"] .docblock-argstable table,
+[data-theme="light"] .docblock-argstable thead th,
+[data-theme="light"] .docblock-argstable tbody td,
+[data-theme="light"] .docblock-argstable tbody th {
+  background-color: hsl(var(--viv-surface)) !important;
+  color: hsl(var(--viv-fg)) !important;
+  border-color: hsl(var(--viv-border)) !important;
+}
+
+[data-theme="light"] .sbdocs-content h1,
+[data-theme="light"] .sbdocs-content h2,
+[data-theme="light"] .sbdocs-content h3,
+[data-theme="light"] .sbdocs-content p {
+  color: hsl(var(--viv-fg));
+}

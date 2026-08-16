@@ -1,0 +1,110 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Introduction" />
+
+<style>{`
+  .viv-hero {
+    padding: 48px 32px;
+    border-radius: 24px;
+    background:
+      radial-gradient(at 0% 0%, hsl(258 95% 70% / 0.18), transparent 50%),
+      radial-gradient(at 100% 100%, hsl(210 95% 65% / 0.18), transparent 50%),
+      hsl(240 14% 8%);
+    color: hsl(240 6% 96%);
+    border: 1px solid hsl(240 8% 18%);
+  }
+  .viv-hero h1 {
+    font-family: "Space Grotesk", "Inter", system-ui;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin: 0 0 16px;
+    background: linear-gradient(120deg, #fff 0%, hsl(258 95% 78%) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .viv-hero p { font-size: 18px; color: hsl(240 6% 78%); max-width: 60ch; margin: 0; }
+  .viv-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 32px; }
+  .viv-card { padding: 16px; border-radius: 12px; background: hsl(240 12% 11%); border: 1px solid hsl(240 8% 18%); }
+  .viv-card strong { display: block; font-size: 14px; margin-bottom: 4px; color: hsl(258 95% 78%); }
+  .viv-card span { font-size: 13px; color: hsl(240 6% 70%); }
+`}</style>
+
+<div className="viv-hero">
+  <h1>VivUI</h1>
+  <p>
+    A futuristic, AI-native, motion-first React component library — built with TypeScript,
+    Tailwind CSS, and design tokens. Ships ESM + CJS, supports SSR + Next.js, and uses
+    Storybook as both its development environment and its public documentation site.
+  </p>
+
+  <div className="viv-grid">
+    <div className="viv-card"><strong>Theme-driven</strong><span>HSL CSS variables, dark/light, multi-theme.</span></div>
+    <div className="viv-card"><strong>Motion-first</strong><span>Easing tokens, spring presets, reduced-motion safe.</span></div>
+    <div className="viv-card"><strong>Accessible</strong><span>Radix-grade primitives, axe-checked in CI.</span></div>
+    <div className="viv-card"><strong>Tree-shakeable</strong><span>Per-component entries, sideEffects clean.</span></div>
+    <div className="viv-card"><strong>SSR-safe</strong><span>No window reads at module scope. Hydration-friendly.</span></div>
+    <div className="viv-card"><strong>Type-strict</strong><span>Strong CVA-typed variant unions everywhere.</span></div>
+  </div>
+</div>
+
+## Install
+
+```bash
+pnpm add @vivui/react
+# or
+npm install @vivui/react
+```
+
+## Set up Tailwind (consumer side)
+
+```ts
+// tailwind.config.ts
+import vivui from "@vivui/react/tailwind-preset";
+
+export default {
+  presets: [vivui],
+  content: [
+    "./src/**/*.{ts,tsx}",
+    "./node_modules/@vivui/react/dist/**/*.{js,mjs,cjs}",
+  ],
+};
+```
+
+## Use it
+
+```tsx
+// app/layout.tsx
+import "@vivui/react/styles.css";
+import { ThemeProvider, VivUIScript } from "@vivui/react";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head><VivUIScript /></head>
+      <body>
+        <ThemeProvider defaultTheme="system">{children}</ThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+```tsx
+import { Button, Card, Badge } from "@vivui/react";
+
+export default function Page() {
+  return (
+    <Card variant="glass">
+      <Card.Header>
+        <Card.Title>Welcome</Card.Title>
+        <Card.Description>VivUI is ready.</Card.Description>
+      </Card.Header>
+      <Card.Footer>
+        <Button>Get started</Button>
+      </Card.Footer>
+    </Card>
+  );
+}
+```
