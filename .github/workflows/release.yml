@@ -2,25 +2,19 @@ name: Release
 
 on:
   push:
-    branches: [main]
-
-concurrency:
-  group: release-${{ github.ref }}
-  cancel-in-progress: false
+    tags:
+      - "v*"
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
   id-token: write   # required for npm provenance
 
 jobs:
-  release:
-    name: Release to npm
+  publish:
+    name: Publish to npm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
         with:
@@ -32,20 +26,23 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org/
 
-      - name: Install
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
+      - name: Build library
         run: pnpm build
 
-      - name: Create release PR or publish
-        uses: changesets/action@v1
-        with:
-          publish: pnpm release
-          version: pnpm version
-          commit: "chore: version packages"
-          title: "chore: version packages"
+      - name: Determine dist-tag
+        id: tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          if echo "$VERSION" | grep -qE '-(alpha|beta|rc)'; then
+            echo "dist_tag=$(echo $VERSION | grep -oE 'alpha|beta|rc')" >> $GITHUB_OUTPUT
+          else
+            echo "dist_tag=latest" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to npm
+        run: npm publish --tag ${{ steps.tag.outputs.dist_tag }} --access public --provenance
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: "true"
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

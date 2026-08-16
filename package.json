@@ -1,6 +1,6 @@
 {
   "name": "@vivui/react",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha.0",
   "description": "VivUI — a futuristic, AI-native, motion-first React UI library built with TypeScript, Tailwind CSS, and Radix-grade primitives.",
   "type": "module",
   "license": "MIT",
