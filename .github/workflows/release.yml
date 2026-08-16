@@ -29,19 +29,17 @@ jobs:
       - name: Build library
         run: pnpm build
 
-      - name: Determine dist-tag
-        id: tag
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          if echo "$VERSION" | grep -qE '-(alpha|beta|rc)'; then
-            echo "dist_tag=$(echo $VERSION | grep -oE 'alpha|beta|rc')" >> $GITHUB_OUTPUT
-          else
-            echo "dist_tag=latest" >> $GITHUB_OUTPUT
-          fi
-
       - name: Publish to npm
         run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          case "$VERSION" in
+            *-alpha*) DIST_TAG=alpha ;;
+            *-beta*)  DIST_TAG=beta ;;
+            *-rc*)    DIST_TAG=rc ;;
+            *)        DIST_TAG=latest ;;
+          esac
+          echo "Publishing $VERSION with dist-tag: $DIST_TAG"
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
-          npm publish --tag ${{ steps.tag.outputs.dist_tag }} --access public
+          npm publish --tag "$DIST_TAG" --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
